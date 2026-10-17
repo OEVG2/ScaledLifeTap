@@ -2,9 +2,8 @@
 ## Title: ScaledLifeTap
 ## Author: Kimilly (original), OEVG2 (4.0)
 ## Version: 4.0
-## Notes: Casts the highest Life Tap rank that fits your missing mana, using exact spell damage from ClassicAPI or Nampower when available, otherwise gear scanning. BonusScanner optional.
+## Notes: Casts the highest Life Tap rank that fits your missing mana, using exact spell damage from ClassicAPI or Nampower when available, otherwise its own gear scanner.
 ## Notes-deDE: Wirkt den passenden Aderlass-Rang abhaengig von fehlendem Mana, Zauberschaden und Talenten. Benoetigt kein BonusScanner mehr.
-## OptionalDeps: BonusScanner
 ## DefaultState: Enabled
 ## SavedVariablesPerCharacter: SLT_Config
 Locale.lua

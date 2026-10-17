@@ -5,7 +5,7 @@ Complete rewrite of ScaledLifeTap 3.
 
 **New**
 - Reads exact shadow spell damage, including buffs, from ClassicAPI (`GetSpellBonusDamage`) or Nampower (`GetSpellPower`) when present.
-- BonusScanner is no longer required: a built-in gear scanner gives the same totals. If BonusScanner is installed, it is used instead of scanning twice.
+- BonusScanner is no longer used: a built-in gear scanner gives the same totals and also works on German and French clients. It can still be forced with `/slt source bonusscanner`.
 - Mana check (Nampower): compares the mana each tap actually gives with the prediction and learns a correction if your server differs. See `/slt calibrate`.
 - `/slt` commands: `cast`, `status`, `overtap`, `reserve`, `bonus`, `source`, `calibrate`, `debug`, `rescan`.
 - Health reserve: never tap below a set % of max health.

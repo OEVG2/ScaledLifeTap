@@ -77,4 +77,23 @@ ScaledLifeTap_CastLifeTap()
 check("after reset rank 6 no longer fits -> rank 5", MOCK.casts[1] == "id:5", tostring(MOCK.casts[1]))
 for _, c in ipairs({"", "status", "calibrate off", "calibrate", "source classicapi", "source auto"}) do SlashCmdList["SCALEDLIFETAP"](c) end
 check("new slash commands run", SLT_Config.calibrate == true and SLT_Config.source == "auto")
+-- both ClassicAPI and Nampower running (the usual setup)
+SlashCmdList["SCALEDLIFETAP"]("calibrate reset")
+function GetSpellBonusDamage(school) return school == 6 and 650 or 0 end   -- same field as GetSpellPower
+t, d, s, src = ScaledLifeTap_GetDamageBonus()
+check("both mods: ClassicAPI supplies spell damage", src == "ClassicAPI" and t == 650, src .. " " .. t)
+for i = 1, 12 do
+  MOCK.hp, MOCK.mana = 3500, 1000
+  ScaledLifeTap_CastLifeTap()
+  this, event, arg1, arg2, arg3, arg4, arg5 = ScaledLifeTapEventFrame, "SPELL_ENERGIZE_BY_SELF", "g", "g", 11689, 0, 1132.8 * 0.9
+  ScaledLifeTapEventFrame.scripts.OnEvent()
+  clock = clock + 5
+end
+check("both mods: Nampower mana check still learns", math.abs(SLT_Config.gainFactor - 0.9) < 0.01, string.format("%.3f", SLT_Config.gainFactor))
+MOCK.loaded = { BonusScanner = true }; BonusScanner = { GetBonus = function() return 0 end }
+t, d, s, src = ScaledLifeTap_GetDamageBonus()
+check("both mods + BonusScanner returning 0: still ClassicAPI", src == "ClassicAPI" and t == 650)
+GetSpellBonusDamage, GetSpellPower = nil, nil
+t, d, s, src = ScaledLifeTap_GetDamageBonus()
+check("no mods + BonusScanner returning 0 (DE/FR case): built-in used, not 0", src == "built-in scanner" and t > 0, src .. " " .. t)
 print(fails == 0 and "ALL TESTS PASSED" or (fails .. " FAILED"))

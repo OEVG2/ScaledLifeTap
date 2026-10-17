@@ -110,7 +110,11 @@ MOCK.gear = { [1] = {"x","+100 Spell Damage"} }
 ScaledLifeTap_Scanner:MarkDirty()
 BonusScanner:ScanEquipment()
 local total, _, _, src = ScaledLifeTap_GetDamageBonus()
-check("auto source prefers loaded BonusScanner", src == "BonusScanner" and total == 100, src .. " " .. total)
+check("auto source skips BonusScanner (uses built-in)", src == "built-in scanner", src .. " " .. total)
+SLT_Config.source = "bonusscanner"
+total, _, _, src = ScaledLifeTap_GetDamageBonus()
+check("forced source bonusscanner still works", src == "BonusScanner" and total == 100, src .. " " .. total)
+SLT_Config.source = "auto"
 MOCK.loaded = nil
 
 -- 7. v3 saved variable migration

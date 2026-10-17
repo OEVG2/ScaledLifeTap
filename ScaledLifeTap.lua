@@ -17,7 +17,7 @@ local DEFAULTS = {
 	debug     = false,
 	reserve   = 0,        -- never tap below this % of max health
 	bonus     = 0,        -- extra spell damage to add (e.g. elixirs/buffs the scanner can't see)
-	source    = "auto",   -- "auto" = ClassicAPI > Nampower > BonusScanner > built-in; or force one of those
+	source    = "auto",   -- "auto" = ClassicAPI > Nampower > built-in; or force one (incl. bonusscanner)
 	calibrate = true,     -- learn a mana correction from Nampower energize events
 	gainFactor = 1,
 	samples   = 0,
@@ -93,7 +93,10 @@ local SOURCES = {
 	internal = function() return Scanner:Get() end,
 }
 local SOURCE_NAMES = { classicapi = "ClassicAPI", nampower = "Nampower", bonusscanner = "BonusScanner", internal = "built-in scanner" }
-local AUTO_ORDER = { "classicapi", "nampower", "bonusscanner", "internal" }
+-- BonusScanner is deliberately not in the auto order: it gives the same totals
+-- as the built-in scanner on English clients and likely 0 on German/French ones.
+-- It can still be forced with /slt source bonusscanner.
+local AUTO_ORDER = { "classicapi", "nampower", "internal" }
 local LIVE_SOURCES = { classicapi = true, nampower = true }   -- these already include buffs
 
 function ScaledLifeTap_GetDamageBonus()

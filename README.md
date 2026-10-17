@@ -2,13 +2,13 @@
 
 A World of Warcraft **1.12.1** addon for Warlocks. One button casts the highest **Life Tap** rank that fits into your missing mana, so you never waste health on mana you can't hold.
 
-It accounts for your shadow spell damage, Improved Life Tap and (optionally) a health safety floor. Version 4 is a rewrite of Kimilly's ScaledLifeTap 3. It no longer needs BonusScanner.
+It accounts for your shadow spell damage, Improved Life Tap and (optionally) a health safety floor. Version 4 is a rewrite of Kimilly's ScaledLifeTap 3. It no longer uses BonusScanner, so you can uninstall it unless another addon needs it.
 
 ## Features
 
 - **Picks the right rank automatically.** Goes from rank 6 down and casts the first one whose mana return fits.
 - **Exact spell damage with client mods.** With [ClassicAPI](https://github.com/brues-code/ClassicAPI) or [Nampower](https://github.com/pepopo978/nampower), it reads the spell damage number the game client itself calculates. That includes buffs such as elixirs, flasks and trinkets.
-- **Works without any mods.** A built-in gear scanner reads your item tooltips. It gives the same totals as BonusScanner, which is now optional.
+- **Works without any mods.** A built-in gear scanner reads your item tooltips. It gives the same totals BonusScanner did, and works on English, German and French clients.
 - **Mana check (Nampower).** Compares the mana each tap actually gives with the prediction, and adjusts itself if your server's Life Tap numbers differ.
 - **Health safety floor.** Optionally never taps below a set percentage of your health.
 - **Light.** No per-frame work. Gear is rescanned only after your equipment changes.
@@ -52,8 +52,11 @@ With `source auto`, the first one available is used:
 |---|---|---|
 | ClassicAPI | Yes | `GetSpellBonusDamage(6)` |
 | Nampower | Yes | `GetSpellPower()`. Also enables the mana check |
-| BonusScanner | No | Used only if installed, to avoid scanning twice |
 | Built-in scanner | No | Always available |
+
+**Running ClassicAPI and Nampower together** (the usual setup) works fine. Spell damage comes from ClassicAPI; both mods read the same number, so it makes no difference which is used. The mana check still uses Nampower.
+
+BonusScanner is never chosen automatically. `/slt source bonusscanner` forces it, but that's rarely useful: it gives the same totals as the built-in scanner on English clients, and likely 0 on German and French clients.
 
 On Nampower versions older than 4.5, the mana check needs its event turned on once:
 `/run SetCVar("NP_EnableSpellEnergizeEvents","1")`
